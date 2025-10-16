@@ -1,52 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mi Música</title>
+  <style>
+    :root{
+      --bg:#f2f3f5;        /* gris suave */
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --primary:#2563eb;
+      --primary-cta:#1d4ed8;
+      --radius:16px;
+      --shadow:0 8px 24px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans","Helvetica Neue",Arial,"Apple Color Emoji","Segoe UI Emoji";
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
+    .container{
+      max-width:960px;
+      margin:auto;
+      padding:20px;
+    }
+    header{
+      background:linear-gradient(180deg,#fff, #f8fafc);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:24px;
+      margin:20px 0 28px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+    header h1{
+      font-size:clamp(22px,4vw,32px);
+      margin:0;
+      letter-spacing:.2px;
+    }
+    .stats{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+      font-size:clamp(14px,2.2vw,16px);
+      color:var(--muted);
+    }
+    .stats strong{ color:var(--text); }
 
+    .section{
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:22px;
+      margin-bottom:22px;
+    }
+    .section h2{
+      margin:0 0 12px;
+      font-size:clamp(18px,3vw,22px);
+    }
+
+    .song{
+      border:1px solid #e5e7eb;
+      border-radius:14px;
+      padding:16px;
+      margin:14px 0;
+      background:#fff;
+    }
+    .song-title{
+      font-weight:700;
+      margin-bottom:10px;
+      font-size:clamp(16px,2.7vw,18px);
+    }
+    audio.audio-controls{ width:100%; outline:none; }
+    .download-btn{
+      display:inline-block;
+      margin-top:10px;
+      background:var(--primary);
+      color:#fff;
+      text-decoration:none;
+      padding:10px 14px;
+      border-radius:12px;
+      font-weight:600;
+      transition:transform .06s ease, background .2s ease;
+    }
+    .download-btn:hover{ background:var(--primary-cta); transform:translateY(-1px); }
+    .lyrics{
+      margin-top:12px;
+      padding:12px;
+      background:#f9fafb;
+      border:1px solid #eef2f7;
+      border-radius:12px;
+      white-space:pre-line;
+      color:#374151;
+      font-size:15px;
+    }
+
+    /* Responsive pequeñas mejoras */
+    @media (max-width:560px){
+      header{ padding:18px }
+      .download-btn{ width:100%; text-align:center }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Mi Música</h1>
-    <div class="stats">
-      <span>Visitas: <strong id="visits">1,248</strong></span>
-      <span>Descargas: <strong id="downloads">342</strong></span>
-    </div>
-  </header>
-
-  <main>
-    <!-- Canciones -->
-    <section class="section">
-      <h2>Canciones</h2>
-
-      <!-- Ejemplo de canción 1 -->
-      <div class="song">
-        <div class="song-title">Los Verdaderos Hijos de Morazán</div>
-        <audio controls class="audio-controls">
-          <source src="songs/Los verdaderos hijos de Morazán.mp3" type="audio/mpeg">
-          Tu navegador no soporta audio.
-        </audio>
-        <a href="songs/Los verdaderos hijos de Morazán.mp3" download class="download-btn">Descargar MP3</a>
-        <div class="lyrics">
-          Esta es la letra de la canción.
-          Puedes escribir aquí lo que quieras.
-          Las líneas se respetan automáticamente.
-        </div>
+  <div class="container">
+    <header>
+      <h1>Mi Música</h1>
+      <div class="stats">
+        <span>Visitas: <strong id="visits">0</strong></span>
+        <span>Descargas: <strong id="downloads">342</strong></span>
       </div>
+    </header>
 
-      <!-- Ejemplo de canción 2 -->
-      <div class="song">
-        <div class="song-title">Canción de Ejemplo 2</div>
-        <audio controls class="audio-controls">
-          <source src="songs/cancion2.mp3" type="audio/mpeg">
-          Tu navegador no soporta audio.
-        </audio>
-        <a href="songs/cancion2.mp3" download class="download-btn">Descargar MP3</a>
-        <div class="lyrics">
-          Otra letra hermosa aquí.
-          Inspiración, emociones, recuerdos...
+    <main>
+      <!-- Canciones -->
+      <section class="section">
+        <h2>Canciones</h2>
+
+        <!-- 1. Los Verdaderos Hijos de Morazán -->
+        <div class="song">
+          <div class="song-title">Los Verdaderos Hijos de Morazán</div>
+          <audio controls class="audio-controls">
+            <!-- Ruta URL-encoded para acentos y espacios -->
+            <source src="songs/Los%20verdaderos%20hijos%20de%20Moraz%C3%A1n.mp3" type="audio/mpeg">
+            Tu navegador no soporta audio.
+          </audio>
+          <a href="songs/Los%20verdaderos%20hijos%20de%20Moraz%C3%A1n.mp3" download class="download-btn">Descargar MP3</a>
+          <div class="lyrics">Letra aquí…</div>
         </div>
-      </div>
-    </section>
 
-    <!-- Frases -->
-    <section class="section">
-      <h2>Frases</h2>
-      <div class="phrases">
+        <!-- 2. Quién dijo yo -->
+        <div class="song">
+          <div class="song-title">Quién dijo yo</div>
+          <audio controls class="audio-controls">
+            <source src="songs/Qui%C3%A9n%20dijo%20yo.mp3" type="audio/mpeg">
+            Tu navegador no soporta audio.
+          </audio>
+          <a href="songs/Qui%C3%A9n%20dijo%20yo.mp3" download class="download-btn">Descargar MP3</a>
+          <div class="lyrics">Letra aquí…</div>
+        </div>
+
+        <!-- 3. Su Nombre Rixi -->
+        <div class="song">
+          <div class="song-title">Su Nombre Rixi</div>
+          <audio controls class="audio-controls">
+            <source src="songs/Su%20Nombre%20Rixi.mp3" type="audio/mpeg">
+            Tu navegador no soporta audio.
+          </audio>
+          <a href="songs/Su%20Nombre%20Rixi.mp3" download class="download-btn">Descargar MP3</a>
+          <div class="lyrics">Letra aquí…</div>
+        </div>
+
+        <!-- 4. Su Nombre Rixi (Merengue) -->
+        <div class="song">
+          <div class="song-title">Su Nombre Rixi (Merengue)</div>
+          <audio controls class="audio-controls">
+            <source src="songs/Su%20Nombre%20Rixi%20%28Merengue%29.mp3" type="audio/mpeg">
+            Tu navegador no soporta audio.
+          </audio>
+          <a href="songs/Su%20Nombre%20Rixi%20%28Merengue%29.mp3" download class="download-btn">Descargar MP3</a>
+          <div class="lyrics">Letra aquí…</div>
+        </div>
+      </section>
+
+      <!-- Frases -->
+      <section class="section">
+        <h2>Frases</h2>
+        <div class="phrases">
+          <!-- Tu contenido de frases -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // ----- CONTADOR DE VISITAS (real en este dispositivo) -----
+    // Guarda y aumenta el número de visitas en localStorage
+    (function(){
+      const KEY = "mi_musica_visits_v1";
+      let visits = parseInt(localStorage.getItem(KEY) || "0", 10);
+      visits += 1;
+      localStorage.setItem(KEY, String(visits));
+      document.getElementById("visits").textContent = visits.toLocaleString();
+
+      // OPCIONAL: si luego tienes un endpoint (Apps Script, Cloudflare Worker, etc.)
+      // pega su URL en REMOTE_URL y se registrará también allí (contador global).
+      const REMOTE_URL = ""; // ej: "https://tu-dominio.com/api/contar"
+      if (REMOTE_URL){
+        try{
+          // Envía sin bloquear la navegación
+          navigator.sendBeacon
+            ? navigator.sendBeacon(REMOTE_URL, new Blob([JSON.stringify({page:"/mi-musica", ts:Date.now()})], {type:"application/json"}))
+            : fetch(REMOTE_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"/mi-musica", ts:Date.now()})});
+        }catch(e){ /* silencioso */ }
+      }
+    })();
+
+    // (Opcional) Contar descargas por dispositivo
+    (function(){
+      const DKEY="mi_musica_downloads_v1";
+      let dls=parseInt(localStorage.getItem(DKEY)||"0",10);
+      document.getElementById("downloads").textContent = (342 + dls).toLocaleString();
+      document.querySelectorAll(".download-btn").forEach(a=>{
+        a.addEventListener("click",()=>{
+          dls += 1;
+          localStorage.setItem(DKEY,String(dls));
+          document.getElementById("downloads").textContent = (342 + dls).toLocaleString();
+        });
+      });
+    })();
+  </script>
+</body>
 </html>
