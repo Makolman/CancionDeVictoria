@@ -6,14 +6,18 @@
   <title>Mi Música</title>
   <style>
     :root{
-      --bg:#f2f3f5;        /* gris suave */
-      --card:#ffffff;
-      --text:#1f2937;
-      --muted:#6b7280;
-      --primary:#2563eb;
-      --primary-cta:#1d4ed8;
+      /* Paleta LIBRE */
+      --bg:#ffffff;                  /* fondo limpio */
+      --card:#ffffff;                /* tarjetas */
+      --text:#000000;                /* texto principal (negro) */
+      --muted:rgba(0,0,0,.65);       /* texto secundario */
+      --primary:#EA1313;             /* rojo institucional */
+      --primary-cta:#000000;         /* énfasis/hover en negro */
+      --accent:#FAFF00;              /* amarillo de acento */
       --radius:16px;
       --shadow:0 8px 24px rgba(0,0,0,.08);
+      --border:rgba(0,0,0,.12);
+      --soft-yellow:rgba(250,255,0,.12);
     }
     *{box-sizing:border-box}
     body{
@@ -29,7 +33,7 @@
       padding:20px;
     }
     header{
-      background:linear-gradient(180deg,#fff, #f8fafc);
+      background:linear-gradient(180deg, var(--primary), var(--accent));
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       padding:24px;
@@ -39,6 +43,7 @@
       justify-content:space-between;
       gap:16px;
       flex-wrap:wrap;
+      color:#000; /* contrasta bien sobre el amarillo inferior */
     }
     header h1{
       font-size:clamp(22px,4vw,32px);
@@ -50,9 +55,9 @@
       gap:18px;
       flex-wrap:wrap;
       font-size:clamp(14px,2.2vw,16px);
-      color:var(--muted);
+      color:#000;
     }
-    .stats strong{ color:var(--text); }
+    .stats strong{ color:#000; }
 
     .section{
       background:var(--card);
@@ -60,14 +65,16 @@
       box-shadow:var(--shadow);
       padding:22px;
       margin-bottom:22px;
+      border:1px solid var(--border);
     }
     .section h2{
       margin:0 0 12px;
       font-size:clamp(18px,3vw,22px);
+      color:var(--primary);
     }
 
     .song{
-      border:1px solid #e5e7eb;
+      border:1px solid var(--border);
       border-radius:14px;
       padding:16px;
       margin:14px 0;
@@ -77,6 +84,7 @@
       font-weight:700;
       margin-bottom:10px;
       font-size:clamp(16px,2.7vw,18px);
+      color:#000;
     }
     audio.audio-controls{ width:100%; outline:none; }
     .download-btn{
@@ -94,15 +102,15 @@
     .lyrics{
       margin-top:12px;
       padding:12px;
-      background:#f9fafb;
-      border:1px solid #eef2f7;
+      background:var(--soft-yellow);      /* toque amarillo suave */
+      border:1px solid var(--border);
       border-radius:12px;
       white-space:pre-line;
-      color:#374151;
+      color:#000;
       font-size:15px;
+      min-height:0; /* sin texto por petición */
     }
 
-    /* Responsive pequeñas mejoras */
     @media (max-width:560px){
       header{ padding:18px }
       .download-btn{ width:100%; text-align:center }
@@ -128,12 +136,11 @@
         <div class="song">
           <div class="song-title">Los Verdaderos Hijos de Morazán</div>
           <audio controls class="audio-controls">
-            <!-- Ruta URL-encoded para acentos y espacios -->
             <source src="songs/Los%20verdaderos%20hijos%20de%20Moraz%C3%A1n.mp3" type="audio/mpeg">
             Tu navegador no soporta audio.
           </audio>
           <a href="songs/Los%20verdaderos%20hijos%20de%20Moraz%C3%A1n.mp3" download class="download-btn">Descargar MP3</a>
-          <div class="lyrics">Letra aquí…</div>
+          <div class="lyrics"></div>
         </div>
 
         <!-- 2. Quién dijo yo -->
@@ -144,7 +151,7 @@
             Tu navegador no soporta audio.
           </audio>
           <a href="songs/Qui%C3%A9n%20dijo%20yo.mp3" download class="download-btn">Descargar MP3</a>
-          <div class="lyrics">Letra aquí…</div>
+          <div class="lyrics"></div>
         </div>
 
         <!-- 3. Su Nombre Rixi -->
@@ -155,7 +162,7 @@
             Tu navegador no soporta audio.
           </audio>
           <a href="songs/Su%20Nombre%20Rixi.mp3" download class="download-btn">Descargar MP3</a>
-          <div class="lyrics">Letra aquí…</div>
+          <div class="lyrics"></div>
         </div>
 
         <!-- 4. Su Nombre Rixi (Merengue) -->
@@ -166,7 +173,7 @@
             Tu navegador no soporta audio.
           </audio>
           <a href="songs/Su%20Nombre%20Rixi%20%28Merengue%29.mp3" download class="download-btn">Descargar MP3</a>
-          <div class="lyrics">Letra aquí…</div>
+          <div class="lyrics"></div>
         </div>
       </section>
 
@@ -181,8 +188,6 @@
   </div>
 
   <script>
-    // ----- CONTADOR DE VISITAS (real en este dispositivo) -----
-    // Guarda y aumenta el número de visitas en localStorage
     (function(){
       const KEY = "mi_musica_visits_v1";
       let visits = parseInt(localStorage.getItem(KEY) || "0", 10);
@@ -190,20 +195,16 @@
       localStorage.setItem(KEY, String(visits));
       document.getElementById("visits").textContent = visits.toLocaleString();
 
-      // OPCIONAL: si luego tienes un endpoint (Apps Script, Cloudflare Worker, etc.)
-      // pega su URL en REMOTE_URL y se registrará también allí (contador global).
-      const REMOTE_URL = ""; // ej: "https://tu-dominio.com/api/contar"
+      const REMOTE_URL = "";
       if (REMOTE_URL){
         try{
-          // Envía sin bloquear la navegación
           navigator.sendBeacon
             ? navigator.sendBeacon(REMOTE_URL, new Blob([JSON.stringify({page:"/mi-musica", ts:Date.now()})], {type:"application/json"}))
             : fetch(REMOTE_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"/mi-musica", ts:Date.now()})});
-        }catch(e){ /* silencioso */ }
+        }catch(e){}
       }
     })();
 
-    // (Opcional) Contar descargas por dispositivo
     (function(){
       const DKEY="mi_musica_downloads_v1";
       let dls=parseInt(localStorage.getItem(DKEY)||"0",10);
@@ -219,3 +220,4 @@
   </script>
 </body>
 </html>
+
